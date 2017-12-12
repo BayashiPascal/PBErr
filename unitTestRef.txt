@@ -1,0 +1,35 @@
+main(PBErrCatch+0x76)[0x8048f42]
+main(UnitTestCatch+0x80)[0x8048d4e]
+main(UnitTestAll+0x27)[0x8048ddc]
+main(main+0x16)[0x8048df6]
+/lib/i386-linux-gnu/libc.so.6(__libc_start_main+0xf7)[0xb7609637]
+main[0x8048a51]
+main(PBErrCatch+0x76)[0x8048f42]
+main(UnitTestCatch+0xe3)[0x8048db1]
+main(UnitTestAll+0x27)[0x8048ddc]
+main(main+0x16)[0x8048df6]
+/lib/i386-linux-gnu/libc.so.6(__libc_start_main+0xf7)[0xb7609637]
+main[0x8048a51]
+PBErrMsg: 
+PBErrFatal: true
+UnitTestCreateStatic
+PBErrMsg: 
+PBErrFatal: true
+UnitTestReset
+Reset OK
+UnitTestMalloc
+Malloc OK
+UnitTestCatch
+---- PBErrCatch ----
+PBErrType: invalid arguments
+PBErrMsg: UnitTestCatch: invalid arg
+PBErrFatal: false
+Stack:
+--------------------
+---- PBErrCatch ----
+PBErrType: null pointer
+PBErrMsg: UnitTestCatch: null pointer
+PBErrFatal: true
+Stack:
+Exiting
+--------------------
