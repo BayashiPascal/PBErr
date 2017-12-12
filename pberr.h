@@ -22,8 +22,8 @@ typedef enum PBErrType {
   PBErrTypeMallocFailed,
   PBErrTypeNullPointer,
   PBErrTypeInvalidArg,
-  PBErrTypeOther,
   PBErrTypeUnitTestFailed,
+  PBErrTypeOther,
   PBErrTypeNb
 } PBErrType;
 
