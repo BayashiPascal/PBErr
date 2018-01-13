@@ -42,6 +42,8 @@ typedef struct PBErr {
 
 extern PBErr thePBErr;
 extern PBErr* PBMathErr;
+extern PBErr* GSetErr;
+extern PBErr* ELORankErr;
 
 // ================ Functions declaration ====================
 
