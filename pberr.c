@@ -9,6 +9,8 @@
 PBErr thePBErr = {._msg[0] = '\0', ._type = PBErrTypeUnknown, 
   ._stream = NULL, ._fatal = true};
 PBErr* PBMathErr = &thePBErr;
+PBErr* GSetErr = &thePBErr;
+PBErr* ELORankErr = &thePBErr;
 
 char *PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
