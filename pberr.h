@@ -24,6 +24,7 @@ typedef enum PBErrType {
   PBErrTypeInvalidArg,
   PBErrTypeUnitTestFailed,
   PBErrTypeOther,
+  PBErrTypeInvalidData,
   PBErrTypeNb
 } PBErrType;
 
