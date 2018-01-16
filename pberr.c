@@ -11,6 +11,8 @@ PBErr thePBErr = {._msg[0] = '\0', ._type = PBErrTypeUnknown,
 PBErr* PBMathErr = &thePBErr;
 PBErr* GSetErr = &thePBErr;
 PBErr* ELORankErr = &thePBErr;
+PBErr* ShapoidErr = &thePBErr;
+PBErr* BCurveErr = &thePBErr;
 
 char *PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
