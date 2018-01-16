@@ -45,6 +45,8 @@ extern PBErr thePBErr;
 extern PBErr* PBMathErr;
 extern PBErr* GSetErr;
 extern PBErr* ELORankErr;
+extern PBErr* ShapoidErr;
+extern PBErr* BCurveErr;
 
 // ================ Functions declaration ====================
 
