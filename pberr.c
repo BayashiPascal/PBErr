@@ -13,6 +13,7 @@ PBErr* GSetErr = &thePBErr;
 PBErr* ELORankErr = &thePBErr;
 PBErr* ShapoidErr = &thePBErr;
 PBErr* BCurveErr = &thePBErr;
+PBErr* GenBrushErr = &thePBErr;
 
 char *PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
