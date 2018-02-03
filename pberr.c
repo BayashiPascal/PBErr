@@ -15,7 +15,7 @@ PBErr* ShapoidErr = &thePBErr;
 PBErr* BCurveErr = &thePBErr;
 PBErr* GenBrushErr = &thePBErr;
 
-char *PBErrTypeLbl[PBErrTypeNb] = {
+char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
   "malloc failed",
   "null pointer",
@@ -34,7 +34,7 @@ PBErr PBErrCreateStatic(void) {
 }
 
 // Reset thePBErr
-void PBErrReset(PBErr *that) {
+void PBErrReset(PBErr* that) {
   if (that == NULL)
     return;
   that->_msg[0] = '\0';
@@ -46,14 +46,14 @@ void PBErrReset(PBErr *that) {
 // Print the error type, the error message, the stack
 // Exit if _fatal == true
 // Reset the PBErr
-void PBErrCatch(PBErr *that) {
+void PBErrCatch(PBErr* that) {
   if (that == NULL)
     return;
-  FILE *stream = (that->_stream ? that->_stream : stderr);
+  FILE* stream = (that->_stream ? that->_stream : stderr);
   fprintf(stream, "---- PBErrCatch ----\n");
   PBErrPrintln(that, stream);
   fprintf(stream, "Stack:\n");
-  void *stack[PBERR_MAXSTACKHEIGHT] = {NULL};
+  void* stack[PBERR_MAXSTACKHEIGHT] = {NULL};
   int stackHeight = backtrace(stack, PBERR_MAXSTACKHEIGHT);
   backtrace_symbols_fd(stack, stackHeight, fileno(stream));
   if (that->_fatal) {
@@ -66,7 +66,7 @@ void PBErrCatch(PBErr *that) {
 }
 
 // Print the PBErr 'that' on 'stream'
-void PBErrPrintln(PBErr *that, FILE *stream) {
+void PBErrPrintln(PBErr* that, FILE* stream) {
   // If the PBErr or stream is null
   if (that == NULL || stream == NULL)
     // Nothing to do
@@ -83,8 +83,8 @@ void PBErrPrintln(PBErr *that, FILE *stream) {
 
 // Secured malloc
 #if defined(PBERRALL) || defined(PBERRSAFEMALLOC)
-void* PBErrMalloc(PBErr *that, size_t size) {
-  void *ret = malloc(size);
+void* PBErrMalloc(PBErr* that, size_t size) {
+  void* ret = malloc(size);
   if (ret == NULL) {
     that->_type = PBErrTypeMallocFailed;
     sprintf(that->_msg, "malloc of %d bytes failed\n", size);

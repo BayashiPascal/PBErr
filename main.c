@@ -26,7 +26,7 @@ void UnitTestReset() {
 
 void UnitTestMalloc() {
   printf("UnitTestMalloc\n");
-  char *arr = PBErrMalloc(&thePBErr, 2);
+  char* arr = PBErrMalloc(&thePBErr, 2);
   printf("Malloc ");
   if (arr == NULL)
     printf("NOK");

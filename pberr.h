@@ -34,7 +34,7 @@ typedef struct PBErr {
   // Error type
   PBErrType _type;
   // Strem for output
-  FILE *_stream;
+  FILE* _stream;
   // Fatal mode, if true exit when catch
   bool _fatal;
 } PBErr;
@@ -55,17 +55,17 @@ extern PBErr* GenBrushErr;
 PBErr PBErrCreateStatic(void);
 
 // Reset thePBErr
-void PBErrReset(PBErr *that);
+void PBErrReset(PBErr* that);
 
 // Hook for error handling
-void PBErrCatch(PBErr *that);
+void PBErrCatch(PBErr* that);
 
 // Print the PBErr 'that' on 'stream'
-void PBErrPrintln(PBErr *that, FILE *stream);
+void PBErrPrintln(PBErr* that, FILE* stream);
 
 // Secured malloc
 #if defined(PBERRALL) || defined(PBERRSAFEMALLOC)
-  void* PBErrMalloc(PBErr *that, size_t size);
+  void* PBErrMalloc(PBErr* that, size_t size);
 #else
   #define PBErrMalloc(that, size) malloc(size)
 #endif
