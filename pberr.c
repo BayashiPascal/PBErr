@@ -15,6 +15,7 @@ PBErr* ShapoidErr = &thePBErr;
 PBErr* BCurveErr = &thePBErr;
 PBErr* GenBrushErr = &thePBErr;
 PBErr* FracNoiseErr = &thePBErr;
+PBErr* GenAlgErr = &thePBErr;
 
 char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",

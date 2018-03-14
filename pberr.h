@@ -49,6 +49,7 @@ extern PBErr* ShapoidErr;
 extern PBErr* BCurveErr;
 extern PBErr* GenBrushErr;
 extern PBErr* FracNoiseErr;
+extern PBErr* GenAlgErr;
 
 // ================ Functions declaration ====================
 
