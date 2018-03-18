@@ -50,6 +50,7 @@ extern PBErr* BCurveErr;
 extern PBErr* GenBrushErr;
 extern PBErr* FracNoiseErr;
 extern PBErr* GenAlgErr;
+extern PBErr* GradErr;
 
 // ================ Functions declaration ====================
 
