@@ -51,6 +51,7 @@ extern PBErr* GenBrushErr;
 extern PBErr* FracNoiseErr;
 extern PBErr* GenAlgErr;
 extern PBErr* GradErr;
+extern PBErr* KnapSackErr;
 
 // ================ Functions declaration ====================
 
