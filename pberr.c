@@ -18,6 +18,7 @@ PBErr* FracNoiseErr = &thePBErr;
 PBErr* GenAlgErr = &thePBErr;
 PBErr* GradErr = &thePBErr;
 PBErr* KnapSackErr = &thePBErr;
+PBErr* NeuraNetErr = &thePBErr;
 
 char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",

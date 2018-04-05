@@ -52,6 +52,7 @@ extern PBErr* FracNoiseErr;
 extern PBErr* GenAlgErr;
 extern PBErr* GradErr;
 extern PBErr* KnapSackErr;
+extern PBErr* NeuraNetErr;
 
 // ================ Functions declaration ====================
 
