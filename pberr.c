@@ -19,6 +19,7 @@ PBErr* GenAlgErr = &thePBErr;
 PBErr* GradErr = &thePBErr;
 PBErr* KnapSackErr = &thePBErr;
 PBErr* NeuraNetErr = &thePBErr;
+PBErr* PBPhysErr = &thePBErr;
 
 char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
