@@ -63,6 +63,10 @@ void PBErrCatch(PBErr* that) {
   void* stack[PBERR_MAXSTACKHEIGHT] = {NULL};
   int stackHeight = backtrace(stack, PBERR_MAXSTACKHEIGHT);
   backtrace_symbols_fd(stack, stackHeight, fileno(stream));
+  if (errno != 0) {
+    fprintf(stream, "errno: %s\n", strerror(errno));
+    errno = 0;
+  }
   if (that->_fatal) {
     fprintf(stream, "Exiting\n");
     fprintf(stream, "--------------------\n");
@@ -100,4 +104,367 @@ void* PBErrMalloc(PBErr* that, size_t size) {
   }
   return ret;
 }
+#endif
+
+// Secured I/O
+#if defined(PBERRALL) || defined(PBERRSAFEIO)
+
+FILE* PBErrOpenStreamIn(PBErr* that, char* path) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (path == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'path' is null");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  FILE* fd = fopen(path, "r");
+  if (fd == NULL) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fopen failed for %s", path);
+    that->_fatal = false;
+    PBErrCatch(that);
+  }
+  return fd;
+}
+
+FILE* PBErrOpenStreamOut(PBErr* that, char* path) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (path == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'path' is null");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  FILE* fd = fopen(path, "w");
+  if (fd == NULL) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fopen failed for %s", path);
+    that->_fatal = false;
+    PBErrCatch(that);
+  }
+  return fd;
+}
+
+void PBErrCloseStream(PBErr* that, FILE* fd) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (fd == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'fd' is null");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  (void)that;
+  fclose(fd);
+}
+
+
+bool _PBErrScanfShort(PBErr* that, 
+  FILE* stream, char* format, short* data) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (stream == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'stream' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (format == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'format' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (data == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'data' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  // Read from the stream
+  if (fscanf(stream, format, data) == EOF) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fscanf failed\n");
+    that->_fatal = false;
+    PBErrCatch(that);
+    return false;
+  }
+  return true;
+}
+
+bool _PBErrScanfInt(PBErr* that, 
+  FILE* stream, char* format, int* data) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (stream == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'stream' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (format == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'format' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (data == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'data' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  // Read from the stream
+  if (fscanf(stream, format, data) == EOF) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fscanf failed\n");
+    that->_fatal = false;
+    PBErrCatch(that);
+    return false;
+  }
+  return true;
+}
+
+bool _PBErrScanfFloat(PBErr* that, 
+  FILE* stream, char* format, float* data) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (stream == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'stream' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (format == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'format' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (data == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'data' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  // Read from the stream
+  if (fscanf(stream, format, data) == EOF) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fscanf failed\n");
+    that->_fatal = false;
+    PBErrCatch(that);
+    return false;
+  }
+  return true;
+}
+  
+bool _PBErrScanfStr(PBErr* that, 
+  FILE* stream, char* format, char* data) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (stream == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'stream' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (format == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'format' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (data == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'data' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  // Read from the stream
+  if (fscanf(stream, format, data) == EOF) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fscanf failed\n");
+    that->_fatal = false;
+    PBErrCatch(that);
+    return false;
+  }
+  return true;
+}
+  
+bool _PBErrPrintfShort(PBErr* that, 
+  FILE* stream, char* format, short data) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (stream == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'stream' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (format == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'format' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  // Print to the stream
+  if (fprintf(stream, format, data) < 0) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fprintf failed\n");
+    that->_fatal = false;
+    PBErrCatch(that);
+    return false;
+  }
+  return true;
+}
+
+bool _PBErrPrintfInt(PBErr* that, 
+  FILE* stream, char* format, int data) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (stream == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'stream' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (format == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'format' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  // Print to the stream
+  if (fprintf(stream, format, data) < 0) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fprintf failed\n");
+    that->_fatal = false;
+    PBErrCatch(that);
+    return false;
+  }
+  return true;
+}
+
+bool _PBErrPrintfFloat(PBErr* that, 
+  FILE* stream, char* format, float data) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (stream == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'stream' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (format == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'format' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  // Print to the stream
+  if (fprintf(stream, format, data) < 0) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fprintf failed\n");
+    that->_fatal = false;
+    PBErrCatch(that);
+    return false;
+  }
+  return true;
+}
+
+bool _PBErrPrintfStr(PBErr* that, 
+  FILE* stream, char* format, char* data) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (stream == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'stream' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (format == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'format' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  // Print to the stream
+  if (fprintf(stream, format, data) < 0) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fprintf failed\n");
+    that->_fatal = false;
+    PBErrCatch(that);
+    return false;
+  }
+  return true;
+}
+
 #endif

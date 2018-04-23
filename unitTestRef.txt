@@ -1,15 +1,13 @@
-main(PBErrCatch+0x76)[0x8048f42]
-main(UnitTestCatch+0x80)[0x8048d4e]
-main(UnitTestAll+0x27)[0x8048ddc]
-main(main+0x16)[0x8048df6]
-/lib/i386-linux-gnu/libc.so.6(__libc_start_main+0xf7)[0xb7609637]
-main[0x8048a51]
-main(PBErrCatch+0x76)[0x8048f42]
-main(UnitTestCatch+0xe3)[0x8048db1]
-main(UnitTestAll+0x27)[0x8048ddc]
-main(main+0x16)[0x8048df6]
-/lib/i386-linux-gnu/libc.so.6(__libc_start_main+0xf7)[0xb7609637]
-main[0x8048a51]
+main(PBErrCatch+0xac)[0x804987c]
+main(UnitTestAll+0xfd)[0x804970d]
+main(main+0x16)[0x8048f46]
+/lib/i386-linux-gnu/libc.so.6(__libc_start_main+0xf7)[0xb760f637]
+main[0x8048f72]
+main(PBErrCatch+0xac)[0x804987c]
+main(UnitTestAll+0x160)[0x8049770]
+main(main+0x16)[0x8048f46]
+/lib/i386-linux-gnu/libc.so.6(__libc_start_main+0xf7)[0xb760f637]
+main[0x8048f72]
 PBErrMsg: 
 PBErrFatal: true
 UnitTestCreateStatic
@@ -19,6 +17,7 @@ UnitTestReset
 Reset OK
 UnitTestMalloc
 Malloc OK
+UnitTestIO OK
 UnitTestCatch
 ---- PBErrCatch ----
 PBErrType: invalid arguments

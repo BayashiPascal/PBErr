@@ -2,7 +2,7 @@
 # 0: development (max safety, no optimisation)
 # 1: release (min safety, optimisation)
 # 2: fast and furious (no safety, optimisation)
-BUILDMODE=0
+BUILDMODE=1
 
 include ./Makefile.inc
 
