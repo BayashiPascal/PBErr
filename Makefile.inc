@@ -5,7 +5,7 @@ ifeq ($(BUILDMODE), 0)
 else 
   ifeq ($(BUILDMODE), 1)
 	  BUILDPARAM=-Wall -Wextra -Werror -Wfatal-errors -O3 \
-		  -DPBERRSAFEMALLOC='1' -DBUILDMODE=$(BUILDMODE)
+		  -DPBERRSAFEMALLOC='1' -DPBERRSAFEIO='1' -DBUILDMODE=$(BUILDMODE)
 	  LINKOPTIONS=-lm -rdynamic
   else 
     ifeq ($(BUILDMODE), 2)
