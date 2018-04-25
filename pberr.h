@@ -58,6 +58,7 @@ extern PBErr* KnapSackErr;
 extern PBErr* NeuraNetErr;
 extern PBErr* PBPhysErr;
 extern PBErr* GTreeErr;
+extern PBErr* JSONFileErr;
 
 // ================ Functions declaration ====================
 
