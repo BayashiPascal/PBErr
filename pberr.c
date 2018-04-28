@@ -21,7 +21,7 @@ PBErr* KnapSackErr = &thePBErr;
 PBErr* NeuraNetErr = &thePBErr;
 PBErr* PBPhysErr = &thePBErr;
 PBErr* GTreeErr = &thePBErr;
-PBErr* JSONFileErr = &thePBErr;
+PBErr* JSONErr = &thePBErr;
 
 char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
