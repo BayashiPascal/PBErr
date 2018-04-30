@@ -29,7 +29,9 @@ char* PBErrTypeLbl[PBErrTypeNb] = {
   "null pointer",
   "invalid arguments",
   "unit test failed",
-  "other"
+  "other",
+  "InvalidData",
+  "I/O error"
 };
 
 // ================ Functions implementation ====================
