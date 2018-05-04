@@ -59,6 +59,7 @@ extern PBErr* NeuraNetErr;
 extern PBErr* PBPhysErr;
 extern PBErr* GTreeErr;
 extern PBErr* JSONErr;
+extern PBErr* MiniFrameErr;
 
 // ================ Functions declaration ====================
 

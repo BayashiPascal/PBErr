@@ -22,6 +22,7 @@ PBErr* NeuraNetErr = &thePBErr;
 PBErr* PBPhysErr = &thePBErr;
 PBErr* GTreeErr = &thePBErr;
 PBErr* JSONErr = &thePBErr;
+PBErr* MiniFrameErr = &thePBErr;
 
 char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
