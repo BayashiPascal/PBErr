@@ -24,7 +24,7 @@ PBErr* GTreeErr = &thePBErr;
 PBErr* JSONErr = &thePBErr;
 PBErr* MiniFrameErr = &thePBErr;
 
-char* PBErrTypeLbl[PBErrTypeNb] = {
+const char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
   "malloc failed",
   "null pointer",
@@ -45,7 +45,7 @@ PBErr PBErrCreateStatic(void) {
 }
 
 // Reset thePBErr
-void PBErrReset(PBErr* that) {
+void PBErrReset(PBErr* const that) {
   if (that == NULL)
     return;
   that->_msg[0] = '\0';
@@ -57,7 +57,7 @@ void PBErrReset(PBErr* that) {
 // Print the error type, the error message, the stack
 // Exit if _fatal == true
 // Reset the PBErr
-void PBErrCatch(PBErr* that) {
+void PBErrCatch(PBErr* const that) {
   if (that == NULL)
     return;
   FILE* stream = (that->_stream ? that->_stream : stderr);
@@ -81,7 +81,7 @@ void PBErrCatch(PBErr* that) {
 }
 
 // Print the PBErr 'that' on 'stream'
-void PBErrPrintln(PBErr* that, FILE* stream) {
+void PBErrPrintln(const PBErr* const that, FILE* const stream) {
   // If the PBErr or stream is null
   if (that == NULL || stream == NULL)
     // Nothing to do
@@ -98,7 +98,7 @@ void PBErrPrintln(PBErr* that, FILE* stream) {
 
 // Secured malloc
 #if defined(PBERRALL) || defined(PBERRSAFEMALLOC)
-void* PBErrMalloc(PBErr* that, size_t size) {
+void* PBErrMalloc(PBErr* const that, const size_t size) {
   void* ret = malloc(size);
   if (ret == NULL) {
     that->_type = PBErrTypeMallocFailed;
@@ -113,7 +113,7 @@ void* PBErrMalloc(PBErr* that, size_t size) {
 // Secured I/O
 #if defined(PBERRALL) || defined(PBERRSAFEIO)
 
-FILE* PBErrOpenStreamIn(PBErr* that, char* path) {
+FILE* PBErrOpenStreamIn(PBErr* const that, const char* const path) {
 #if BUILDMODE == 0
   if (that == NULL) {
     that->_type = PBErrTypeNullPointer;
@@ -138,7 +138,7 @@ FILE* PBErrOpenStreamIn(PBErr* that, char* path) {
   return fd;
 }
 
-FILE* PBErrOpenStreamOut(PBErr* that, char* path) {
+FILE* PBErrOpenStreamOut(PBErr* const that, const char* const path) {
 #if BUILDMODE == 0
   if (that == NULL) {
     that->_type = PBErrTypeNullPointer;
@@ -163,7 +163,7 @@ FILE* PBErrOpenStreamOut(PBErr* that, char* path) {
   return fd;
 }
 
-void PBErrCloseStream(PBErr* that, FILE* fd) {
+void PBErrCloseStream(PBErr* const that, FILE* const fd) {
 #if BUILDMODE == 0
   if (that == NULL) {
     that->_type = PBErrTypeNullPointer;
@@ -183,8 +183,8 @@ void PBErrCloseStream(PBErr* that, FILE* fd) {
 }
 
 
-bool _PBErrScanfShort(PBErr* that, 
-  FILE* stream, char* format, short* data) {
+bool _PBErrScanfShort(PBErr* const that, 
+  FILE* const stream, const char* const format, short* const data) {
 #if BUILDMODE == 0
   if (that == NULL) {
     that->_type = PBErrTypeNullPointer;
@@ -222,8 +222,8 @@ bool _PBErrScanfShort(PBErr* that,
   return true;
 }
 
-bool _PBErrScanfInt(PBErr* that, 
-  FILE* stream, char* format, int* data) {
+bool _PBErrScanfInt(PBErr* const that, 
+  FILE* const stream, const char* const format, int* const data) {
 #if BUILDMODE == 0
   if (that == NULL) {
     that->_type = PBErrTypeNullPointer;
@@ -261,47 +261,8 @@ bool _PBErrScanfInt(PBErr* that,
   return true;
 }
 
-bool _PBErrScanfFloat(PBErr* that, 
-  FILE* stream, char* format, float* data) {
-#if BUILDMODE == 0
-  if (that == NULL) {
-    that->_type = PBErrTypeNullPointer;
-    sprintf(that->_msg, "'that' is null\n");
-    that->_fatal = true;
-    PBErrCatch(that);
-  }
-  if (stream == NULL) {
-    that->_type = PBErrTypeNullPointer;
-    sprintf(that->_msg, "'stream' is null\n");
-    that->_fatal = true;
-    PBErrCatch(that);
-  }
-  if (format == NULL) {
-    that->_type = PBErrTypeNullPointer;
-    sprintf(that->_msg, "'format' is null\n");
-    that->_fatal = true;
-    PBErrCatch(that);
-  }
-  if (data == NULL) {
-    that->_type = PBErrTypeNullPointer;
-    sprintf(that->_msg, "'data' is null\n");
-    that->_fatal = true;
-    PBErrCatch(that);
-  }
-#endif
-  // Read from the stream
-  if (fscanf(stream, format, data) == EOF) {
-    that->_type = PBErrTypeIOError;
-    sprintf(that->_msg, "fscanf failed\n");
-    that->_fatal = false;
-    PBErrCatch(that);
-    return false;
-  }
-  return true;
-}
-  
-bool _PBErrScanfStr(PBErr* that, 
-  FILE* stream, char* format, char* data) {
+bool _PBErrScanfFloat(PBErr* const that, 
+  FILE* const stream, const char* const format, float* const data) {
 #if BUILDMODE == 0
   if (that == NULL) {
     that->_type = PBErrTypeNullPointer;
@@ -339,8 +300,47 @@ bool _PBErrScanfStr(PBErr* that,
   return true;
 }
   
-bool _PBErrPrintfShort(PBErr* that, 
-  FILE* stream, char* format, short data) {
+bool _PBErrScanfStr(PBErr* const that, 
+  FILE* const stream, const char* const format, char* const data) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (stream == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'stream' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (format == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'format' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (data == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'data' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  // Read from the stream
+  if (fscanf(stream, format, data) == EOF) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fscanf failed\n");
+    that->_fatal = false;
+    PBErrCatch(that);
+    return false;
+  }
+  return true;
+}
+  
+bool _PBErrPrintfShort(PBErr* const that, 
+  FILE* const stream, const char* const format, const short data) {
 #if BUILDMODE == 0
   if (that == NULL) {
     that->_type = PBErrTypeNullPointer;
@@ -372,8 +372,8 @@ bool _PBErrPrintfShort(PBErr* that,
   return true;
 }
 
-bool _PBErrPrintfInt(PBErr* that, 
-  FILE* stream, char* format, int data) {
+bool _PBErrPrintfInt(PBErr* const that, 
+  FILE* const stream, const char* const format, const int data) {
 #if BUILDMODE == 0
   if (that == NULL) {
     that->_type = PBErrTypeNullPointer;
@@ -405,8 +405,8 @@ bool _PBErrPrintfInt(PBErr* that,
   return true;
 }
 
-bool _PBErrPrintfFloat(PBErr* that, 
-  FILE* stream, char* format, float data) {
+bool _PBErrPrintfFloat(PBErr* const that, 
+  FILE* const stream, const char* const format, const float data) {
 #if BUILDMODE == 0
   if (that == NULL) {
     that->_type = PBErrTypeNullPointer;
@@ -438,8 +438,9 @@ bool _PBErrPrintfFloat(PBErr* that,
   return true;
 }
 
-bool _PBErrPrintfStr(PBErr* that, 
-  FILE* stream, char* format, char* data) {
+bool _PBErrPrintfStr(PBErr* const that, 
+  FILE* const stream, const char* const format, 
+  const char* const data) {
 #if BUILDMODE == 0
   if (that == NULL) {
     that->_type = PBErrTypeNullPointer;

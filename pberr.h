@@ -67,44 +67,45 @@ extern PBErr* MiniFrameErr;
 PBErr PBErrCreateStatic(void);
 
 // Reset thePBErr
-void PBErrReset(PBErr* that);
+void PBErrReset(PBErr* const that);
 
 // Hook for error handling
-void PBErrCatch(PBErr* that);
+void PBErrCatch(PBErr* const that);
 
 // Print the PBErr 'that' on 'stream'
-void PBErrPrintln(PBErr* that, FILE* stream);
+void PBErrPrintln(const PBErr* const that, FILE* const stream);
 
 // Secured malloc
 #if defined(PBERRALL) || defined(PBERRSAFEMALLOC)
-  void* PBErrMalloc(PBErr* that, size_t size);
+  void* PBErrMalloc(PBErr* const that, const size_t size);
 #else
   #define PBErrMalloc(That, Size) malloc(Size)
 #endif
 
 // Secured I/O
 #if defined(PBERRALL) || defined(PBERRSAFEIO)
-  FILE* PBErrOpenStreamIn(PBErr* that, char* path);
-  FILE* PBErrOpenStreamOut(PBErr* that, char* path);
-  void PBErrCloseStream(PBErr* that, FILE* fd);
+  FILE* PBErrOpenStreamIn(PBErr* const that, const char* const path);
+  FILE* PBErrOpenStreamOut(PBErr* const that, const char* const path);
+  void PBErrCloseStream(PBErr* const that, FILE* const fd);
 
-  bool _PBErrScanfShort(PBErr* that, 
-    FILE* stream, char* format, short* data);
-  bool _PBErrScanfInt(PBErr* that, 
-    FILE* stream, char* format, int* data);
-  bool _PBErrScanfFloat(PBErr* that, 
-    FILE* stream, char* format, float* data);
-  bool _PBErrScanfStr(PBErr* that, 
-    FILE* stream, char* format, char* data);
+  bool _PBErrScanfShort(PBErr* const that, 
+    FILE* const stream, const char* const format, short* const data);
+  bool _PBErrScanfInt(PBErr* const that, 
+    FILE* const stream, const char* const format, int* const data);
+  bool _PBErrScanfFloat(PBErr* const that, 
+    FILE* const stream, const char* const format, float* const data);
+  bool _PBErrScanfStr(PBErr* const that, 
+    FILE* const stream, const char* const format, char* const data);
     
-  bool _PBErrPrintfShort(PBErr* that, 
-    FILE* stream, char* format, short data);
-  bool _PBErrPrintfInt(PBErr* that, 
-    FILE* stream, char* format, int data);
-  bool _PBErrPrintfFloat(PBErr* that, 
-    FILE* stream, char* format, float data);
-  bool _PBErrPrintfStr(PBErr* that, 
-    FILE* stream, char* format, char* data);
+  bool _PBErrPrintfShort(PBErr* const that, 
+    FILE* const stream, const char* const format, const short data);
+  bool _PBErrPrintfInt(PBErr* const that, 
+    FILE* const stream, const char* const format, const int data);
+  bool _PBErrPrintfFloat(PBErr* const that, 
+    FILE* const stream, const char* const format, const float data);
+  bool _PBErrPrintfStr(PBErr* const that, 
+    FILE* const stream, const char* const format, 
+    const char* const data);
 #else
   #define PBErrOpenStreamIn(Err, Path) \
     fopen(Path, "r")
