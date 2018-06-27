@@ -57,7 +57,7 @@ extern PBErr* GradErr;
 extern PBErr* KnapSackErr;
 extern PBErr* NeuraNetErr;
 extern PBErr* PBPhysErr;
-extern PBErr* GTreeErr;
+extern PBErr* GenTreeErr;
 extern PBErr* JSONErr;
 extern PBErr* MiniFrameErr;
 
