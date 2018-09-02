@@ -372,6 +372,39 @@ bool _PBErrPrintfShort(PBErr* const that,
   return true;
 }
 
+bool _PBErrPrintfLong(PBErr* const that, 
+  FILE* const stream, const char* const format, const long data) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'that' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (stream == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'stream' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+  if (format == NULL) {
+    that->_type = PBErrTypeNullPointer;
+    sprintf(that->_msg, "'format' is null\n");
+    that->_fatal = true;
+    PBErrCatch(that);
+  }
+#endif
+  // Print to the stream
+  if (fprintf(stream, format, data) < 0) {
+    that->_type = PBErrTypeIOError;
+    sprintf(that->_msg, "fprintf failed\n");
+    that->_fatal = false;
+    PBErrCatch(that);
+    return false;
+  }
+  return true;
+}
+
 bool _PBErrPrintfInt(PBErr* const that, 
   FILE* const stream, const char* const format, const int data) {
 #if BUILDMODE == 0

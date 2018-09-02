@@ -101,6 +101,8 @@ void PBErrPrintln(const PBErr* const that, FILE* const stream);
     FILE* const stream, const char* const format, const short data);
   bool _PBErrPrintfInt(PBErr* const that, 
     FILE* const stream, const char* const format, const int data);
+  bool _PBErrPrintfLong(PBErr* const that, 
+    FILE* const stream, const char* const format, const long data);
   bool _PBErrPrintfFloat(PBErr* const that, 
     FILE* const stream, const char* const format, const float data);
   bool _PBErrPrintfStr(PBErr* const that, 
@@ -137,6 +139,7 @@ void PBErrInvalidPolymorphism(void*t, ...);
   #define PBErrPrintf(Err, Stream, Format, Data) _Generic(Data, \
     short: _PBErrPrintfShort, \
     int: _PBErrPrintfInt, \
+    long: _PBErrPrintfLong, \
     float: _PBErrPrintfFloat, \
     char*: _PBErrPrintfStr, \
     default: PBErrInvalidPolymorphism) (Err, Stream, Format, Data)
