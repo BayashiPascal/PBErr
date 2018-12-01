@@ -60,6 +60,7 @@ extern PBErr* PBPhysErr;
 extern PBErr* GenTreeErr;
 extern PBErr* JSONErr;
 extern PBErr* MiniFrameErr;
+extern PBErr* PixelToPosEstimatorErr;
 
 // ================ Functions declaration ====================
 

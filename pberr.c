@@ -23,6 +23,7 @@ PBErr* PBPhysErr = &thePBErr;
 PBErr* GenTreeErr = &thePBErr;
 PBErr* JSONErr = &thePBErr;
 PBErr* MiniFrameErr = &thePBErr;
+PBErr* PixelToPosEstimatorErr = &thePBErr;
 
 const char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
