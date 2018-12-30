@@ -89,7 +89,7 @@ void PBErrPrintln(const PBErr* const that, FILE* const stream) {
     return;
   if (that->_type > 0 && that->_type < PBErrTypeNb)
     fprintf(stream, "PBErrType: %s\n", PBErrTypeLbl[that->_type]);
-  if (that->_msg != NULL)
+  if (that->_msg[0] != '\0')
     fprintf(stream, "PBErrMsg: %s\n", that->_msg);
   if (that->_fatal)
     fprintf(stream, "PBErrFatal: true\n");
@@ -103,7 +103,8 @@ void* PBErrMalloc(PBErr* const that, const size_t size) {
   void* ret = malloc(size);
   if (ret == NULL) {
     that->_type = PBErrTypeMallocFailed;
-    sprintf(that->_msg, "malloc of %d bytes failed\n", size);
+    sprintf(that->_msg, "malloc of %ld bytes failed\n", 
+      (unsigned long int)size);
     that->_fatal = true;
     PBErrCatch(that);
   }
