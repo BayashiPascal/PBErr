@@ -6,8 +6,12 @@
 
 // ================= Define ==================
 
+// Default PBErr
 PBErr thePBErr = {._msg[0] = '\0', ._type = PBErrTypeUnknown, 
   ._stream = NULL, ._fatal = true};
+// Declare a pointer for each repository, by default they are
+// all pointing toward the default PBErr, but it allows the 
+// user to manage separately the errors if necessary
 PBErr* PBMathErr = &thePBErr;
 PBErr* GSetErr = &thePBErr;
 PBErr* ELORankErr = &thePBErr;
@@ -26,6 +30,7 @@ PBErr* MiniFrameErr = &thePBErr;
 PBErr* PixelToPosEstimatorErr = &thePBErr;
 PBErr* PBDataAnalysisErr = &thePBErr;
 PBErr* PBImgAnalysisErr = &thePBErr;
+PBErr* SDSIAErr = &thePBErr;
 
 const char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
