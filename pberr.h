@@ -63,6 +63,7 @@ extern PBErr* MiniFrameErr;
 extern PBErr* PixelToPosEstimatorErr;
 extern PBErr* PBDataAnalysisErr;
 extern PBErr* PBImgAnalysisErr;
+extern PBErr* PBFileSysErr;
 extern PBErr* SDSIAErr;
 
 // ================ Functions declaration ====================

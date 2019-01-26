@@ -30,6 +30,7 @@ PBErr* MiniFrameErr = &thePBErr;
 PBErr* PixelToPosEstimatorErr = &thePBErr;
 PBErr* PBDataAnalysisErr = &thePBErr;
 PBErr* PBImgAnalysisErr = &thePBErr;
+PBErr* PBFileSysErr = &thePBErr;
 PBErr* SDSIAErr = &thePBErr;
 
 const char* PBErrTypeLbl[PBErrTypeNb] = {
