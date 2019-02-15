@@ -28,6 +28,7 @@ typedef enum PBErrType {
   PBErrTypeOther,
   PBErrTypeInvalidData,
   PBErrTypeIOError,
+  PBErrTypeNotYetImplemented,
   PBErrTypeNb
 } PBErrType;
 

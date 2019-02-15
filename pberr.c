@@ -41,8 +41,9 @@ const char* PBErrTypeLbl[PBErrTypeNb] = {
   "invalid arguments",
   "unit test failed",
   "other",
-  "InvalidData",
-  "I/O error"
+  "invalid data",
+  "I/O error",
+  "not yet implemented"
 };
 
 // ================ Functions implementation ====================
