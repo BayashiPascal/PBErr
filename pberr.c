@@ -33,6 +33,7 @@ PBErr* PBImgAnalysisErr = &thePBErr;
 PBErr* PBFileSysErr = &thePBErr;
 PBErr* SDSIAErr = &thePBErr;
 PBErr* GDataSetErr = &thePBErr;
+PBErr* ResPublishErr = &thePBErr;
 
 const char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",

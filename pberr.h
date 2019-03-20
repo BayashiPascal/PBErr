@@ -67,6 +67,7 @@ extern PBErr* PBImgAnalysisErr;
 extern PBErr* PBFileSysErr;
 extern PBErr* SDSIAErr;
 extern PBErr* GDataSetErr;
+extern PBErr* ResPublishErr;
 
 // ================ Functions declaration ====================
 
