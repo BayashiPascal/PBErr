@@ -34,6 +34,7 @@ PBErr* PBFileSysErr = &thePBErr;
 PBErr* SDSIAErr = &thePBErr;
 PBErr* GDataSetErr = &thePBErr;
 PBErr* ResPublishErr = &thePBErr;
+PBErr* TheSquidErr = &thePBErr;
 
 const char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",

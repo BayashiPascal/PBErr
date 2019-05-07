@@ -68,6 +68,7 @@ extern PBErr* PBFileSysErr;
 extern PBErr* SDSIAErr;
 extern PBErr* GDataSetErr;
 extern PBErr* ResPublishErr;
+extern PBErr* TheSquidErr;
 
 // ================ Functions declaration ====================
 

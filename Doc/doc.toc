@@ -1,6 +1,6 @@
 \contentsline {section}{\numberline {1}Interface}{1}
 \contentsline {section}{\numberline {2}Code}{4}
 \contentsline {subsection}{\numberline {2.1}pberr.c}{4}
-\contentsline {section}{\numberline {3}Makefile}{12}
+\contentsline {section}{\numberline {3}Makefile}{13}
 \contentsline {section}{\numberline {4}Unit tests}{13}
 \contentsline {section}{\numberline {5}Unit tests output}{15}
