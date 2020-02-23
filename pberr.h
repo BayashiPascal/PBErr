@@ -71,6 +71,7 @@ extern PBErr* GDataSetErr;
 extern PBErr* ResPublishErr;
 extern PBErr* TheSquidErr;
 extern PBErr* CBoErr;
+extern PBErr* CrypticErr;
 
 // ================ Functions declaration ====================
 
