@@ -73,6 +73,7 @@ extern PBErr* TheSquidErr;
 extern PBErr* CBoErr;
 extern PBErr* CrypticErr;
 extern PBErr* GradAutomatonErr;
+extern PBErr* SmallyErr;
 
 // ================ Functions declaration ====================
 

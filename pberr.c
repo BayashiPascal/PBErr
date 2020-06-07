@@ -38,6 +38,7 @@ PBErr* TheSquidErr = &thePBErr;
 PBErr* CBoErr = &thePBErr;
 PBErr* CrypticErr = &thePBErr;
 PBErr* GradAutomatonErr = &thePBErr;
+PBErr* SmallyErr = &thePBErr;
 
 const char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
