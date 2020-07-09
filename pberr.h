@@ -74,6 +74,7 @@ extern PBErr* CBoErr;
 extern PBErr* CrypticErr;
 extern PBErr* GradAutomatonErr;
 extern PBErr* SmallyErr;
+extern PBErr* PBPointCloudErr;
 
 // ================ Functions declaration ====================
 

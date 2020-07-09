@@ -39,6 +39,7 @@ PBErr* CBoErr = &thePBErr;
 PBErr* CrypticErr = &thePBErr;
 PBErr* GradAutomatonErr = &thePBErr;
 PBErr* SmallyErr = &thePBErr;
+PBErr* PBPointCloudErr = &thePBErr;
 
 const char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",
