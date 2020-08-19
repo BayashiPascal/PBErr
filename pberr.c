@@ -40,6 +40,7 @@ PBErr* CrypticErr = &thePBErr;
 PBErr* GradAutomatonErr = &thePBErr;
 PBErr* SmallyErr = &thePBErr;
 PBErr* BuzzyErr = &thePBErr;
+PBErr* NeuraMorphErr = &thePBErr;
 
 const char* PBErrTypeLbl[PBErrTypeNb] = {
   "unknown",

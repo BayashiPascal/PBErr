@@ -75,6 +75,7 @@ extern PBErr* CrypticErr;
 extern PBErr* GradAutomatonErr;
 extern PBErr* SmallyErr;
 extern PBErr* BuzzyErr;
+extern PBErr* NeuraMorphErr;
 
 // ================ Functions declaration ====================
 
