@@ -527,3 +527,41 @@ bool _PBErrPrintfStr(PBErr* const that,
 }
 
 #endif
+
+// Try/catch
+
+int PBErrExcLvl = 0;
+
+void PBErrUnhandledException(int exc) {
+
+  fprintf(stderr, "Unhandled exception (%d), exiting.\n", exc);
+  exit(EXIT_FAILURE);
+
+}
+
+void PBErrExceptionLvlOverflow(void) {
+
+  fprintf(stderr,"Exception level overflow, exiting\n");
+  exit(EXIT_FAILURE);
+
+}
+
+void PBErrSigSegvHandler(int signal, siginfo_t *si, void *arg) {
+
+  (void)signal; (void)si; (void)arg;
+  PBErrRaise(PBErr_Exception_Segv);
+
+}
+
+void PBErrInitHandlerSigSegv(void) {
+
+  struct sigaction sigActionSegv;
+  memset(&sigActionSegv, 0, sizeof(struct sigaction));
+  sigemptyset(&(sigActionSegv.sa_mask));
+  sigActionSegv.sa_sigaction = PBErrSigSegvHandler;
+  sigActionSegv.sa_flags = SA_SIGINFO;
+  sigaction(SIGSEGV, &sigActionSegv, NULL);
+
+}
+
+

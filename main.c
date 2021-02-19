@@ -105,12 +105,88 @@ void UnitTestCatch() {
   PBErrCatch(&thePBErr);
 }
 
+void fun(void) {
+  double a = 0./0.;
+  if (isnan(a)) PBErrRaise(PBErr_Exception_NaN); 
+}
+
+void UnitTestTryCatch() {
+
+  // --------------
+
+  PBErrTry:
+    if (isnan(0./0.)) PBErrRaise(PBErr_Exception_NaN);
+
+  PBErrCatchExc PBErr_Exception_NaN:
+    printf("Catched exception NaN\n");
+
+  PBErrEndTry;
+
+  // --------------
+
+  PBErrTry:
+
+    PBErrTry:
+      if (isnan(0./0.)) PBErrRaise(PBErr_Exception_NaN);
+
+    PBErrEndTry;
+
+  PBErrCatchExc PBErr_Exception_NaN:
+    printf("Catched exception NaN at sublevel\n");
+
+  PBErrEndTry;
+
+  // --------------
+
+  #define myUserDefinedException (PBErr_Exception_LastID + 1)
+  PBErrTry:
+    PBErrRaise(myUserDefinedException);
+
+  PBErrCatchExc myUserDefinedException:
+    printf("Catched user defined exception\n");
+
+  PBErrEndTry;
+
+  // --------------
+
+  PBErrInitHandlerSigSegv();
+
+  int* p = NULL;
+
+  PBErrTry:
+    *p = 1;
+
+  PBErrCatchExc PBErr_Exception_NaN:
+    printf("Catched exception NaN\n");
+
+  PBErrCatchExc PBErr_Exception_Segv:
+    printf("Catched exception Segv\n");
+
+  PBErrCatchExc myUserDefinedException:
+    printf("Catched user defined exception\n");
+
+  PBErrEndTry;
+
+  // --------------
+
+  PBErrTry:
+    fun();
+
+  PBErrCatchExc PBErr_Exception_NaN:
+    printf("Catched exception NaN in called function\n");
+
+  PBErrEndTry;
+
+  printf("UnitTestTryCatch OK\n");
+}
+
 void UnitTestAll() {
   PBErrPrintln(&thePBErr, stdout);
   UnitTestCreateStatic();
   UnitTestReset();
   UnitTestMalloc();
   UnitTestIO();
+  UnitTestTryCatch();
   UnitTestCatch();
 }
 

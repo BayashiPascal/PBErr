@@ -11,6 +11,9 @@
 #include <execinfo.h>
 #include <errno.h>
 #include <string.h>
+#include <setjmp.h>
+#include <signal.h>
+
 
 // ================= Define ==================
 
@@ -141,6 +144,47 @@ void PBErrPrintln(const PBErr* const that, FILE* const stream);
 // Hook for invalid polymorphisms
 void PBErrInvalidPolymorphism(void*t, ...); 
 
+// Try/catch
+
+enum PBErr_Exception {
+
+  PBErr_Exception_MaxExceptionLevelReached = 1,
+  PBErr_Exception_NaN,
+  PBErr_Exception_IOError,
+  PBErr_Exception_Segv,
+  PBErr_Exception_LastID
+
+};
+
+void PBErrUnhandledException(int exc);
+void PBErrExceptionLvlOverflow(void);
+#define PBErrMaxExcLvl 256
+jmp_buf PBErrExcJmp[PBErrMaxExcLvl];
+extern int PBErrExcLvl;
+#define PBErrTry \
+  do { \
+    int PBErrExc = 0; \
+    if (PBErrExcLvl == PBErrMaxExcLvl) PBErrExceptionLvlOverflow(); \
+    switch (PBErrExc = setjmp(PBErrExcJmp[PBErrExcLvl++])) { \
+      case 0
+#define PBErrCatchExc \
+  break; \
+  case
+#define PBErrEndTry \
+  break; \
+  default: \
+      if(PBErrExcLvl < 2) \
+        PBErrUnhandledException(PBErrExc); \
+      else { \
+        PBErrExcLvl--; \
+        PBErrRaise(PBErrExc); \
+      } \
+    } \
+  } while(0); \
+  PBErrExcLvl--;
+#define PBErrRaise(e) longjmp(PBErrExcJmp[PBErrExcLvl - 1], e)
+void PBErrSigSegvHandler(int signal, siginfo_t *si, void *arg);
+void PBErrInitHandlerSigSegv(void);
 
 // ================= Polymorphism ==================
 

@@ -1,23 +1,26 @@
-main(PBErrCatch+0xac)[0x804987c]
-main(UnitTestAll+0xfd)[0x804970d]
-main(main+0x16)[0x8048f46]
-/lib/i386-linux-gnu/libc.so.6(__libc_start_main+0xf7)[0xb760f637]
-main[0x8048f72]
-main(PBErrCatch+0xac)[0x804987c]
-main(UnitTestAll+0x160)[0x8049770]
-main(main+0x16)[0x8048f46]
-/lib/i386-linux-gnu/libc.so.6(__libc_start_main+0xf7)[0xb760f637]
-main[0x8048f72]
-PBErrMsg: 
+main(PBErrCatch+0xd7)[0x55cc6f154cb7]
+main(UnitTestAll+0xfb)[0x55cc6f154abb]
+main(main+0xb)[0x55cc6f153e2b]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xe7)[0x7fc1e930dbf7]
+main(_start+0x2a)[0x55cc6f153e6a]
+main(PBErrCatch+0xd7)[0x55cc6f154cb7]
+main(main+0xb)[0x55cc6f153e2b]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xe7)[0x7fc1e930dbf7]
+main(_start+0x2a)[0x55cc6f153e6a]
 PBErrFatal: true
 UnitTestCreateStatic
-PBErrMsg: 
 PBErrFatal: true
 UnitTestReset
 Reset OK
 UnitTestMalloc
 Malloc OK
 UnitTestIO OK
+Catched exception NaN
+Catched exception NaN at sublevel
+Catched user defined exception
+Catched exception Segv
+Catched exception NaN in called function
+UnitTestTryCatch OK
 UnitTestCatch
 ---- PBErrCatch ----
 PBErrType: invalid arguments
