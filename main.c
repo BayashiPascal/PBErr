@@ -105,77 +105,185 @@ void UnitTestCatch() {
   PBErrCatch(&thePBErr);
 }
 
-void fun(void) {
-  double a = 0./0.;
-  if (isnan(a)) PBErrRaise(PBErr_Exception_NaN); 
+void fun() {
+  if (isnan(0. / 0.)) Raise(TryCatchException_NaN);
 }
 
 void UnitTestTryCatch() {
 
   // --------------
+  // Simple example, raise an exception in a TryCatch block and catch it.
 
-  PBErrTry:
-    if (isnan(0./0.)) PBErrRaise(PBErr_Exception_NaN);
+  Try {
 
-  PBErrCatchExc PBErr_Exception_NaN:
+    if (isnan(0. / 0.)) Raise(TryCatchException_NaN);
+
+  } Catch(TryCatchException_NaN) {
+
     printf("Catched exception NaN\n");
 
-  PBErrEndTry;
+  } EndTry;
+
+  // Output:
+  //
+  // Catched exception NaN
+  //
 
   // --------------
+  // Example of TryCatch block inside another TryCatch block and exception
+  // forwarded from the inner block to the outer block after being ignored
+  // by the inner block.
 
-  PBErrTry:
+  Try {
 
-    PBErrTry:
-      if (isnan(0./0.)) PBErrRaise(PBErr_Exception_NaN);
+    Try {
 
-    PBErrEndTry;
+      if (isnan(0. / 0.)) Raise(TryCatchException_NaN);
 
-  PBErrCatchExc PBErr_Exception_NaN:
+    } EndTry;
+
+  } Catch (TryCatchException_NaN) {
+
     printf("Catched exception NaN at sublevel\n");
 
-  PBErrEndTry;
+  } EndTry;
+
+  // Output:
+  //
+  // Catched exception NaN at sublevel
+  //
 
   // --------------
+  // Example of user defined exception and multiple catch segments.
 
-  #define myUserDefinedException (PBErr_Exception_LastID + 1)
-  PBErrTry:
-    PBErrRaise(myUserDefinedException);
+  enum UserDefinedExceptions {
 
-  PBErrCatchExc myUserDefinedException:
-    printf("Catched user defined exception\n");
+    myUserExceptionA = TryCatchException_LastID,
+    myUserExceptionB,
+    myUserExceptionC
 
-  PBErrEndTry;
+  };
+
+  Try {
+
+    Raise(myUserExceptionA);
+
+  } Catch (myUserExceptionA) {
+
+    printf("Catched user defined exception A\n");
+
+  } Catch (myUserExceptionB) {
+
+    printf("Catched user defined exception B\n");
+
+  } Catch (myUserExceptionC) {
+
+    printf("Catched user defined exception C\n");
+
+  } EndTry;
+
+  // Output:
+  //
+  // Catched user defined exception A
+  //
+
+// The struct siginfo_t used to handle the SIGSEV is not defined in
+// ANSI C, guard against this.
+#ifndef __STRICT_ANSI__
 
   // --------------
+  // Example of handling exception raided by SIGSEV.
 
-  PBErrInitHandlerSigSegv();
+  // Init the SIGSEV signal handling by TryCatch.
+  TryCatchInitHandlerSigSegv();
 
-  int* p = NULL;
+  Try {
 
-  PBErrTry:
+    int *p = NULL;
     *p = 1;
 
-  PBErrCatchExc PBErr_Exception_NaN:
-    printf("Catched exception NaN\n");
+  } Catch (TryCatchException_Segv) {
 
-  PBErrCatchExc PBErr_Exception_Segv:
     printf("Catched exception Segv\n");
 
-  PBErrCatchExc myUserDefinedException:
-    printf("Catched user defined exception\n");
+  } EndTry;
 
-  PBErrEndTry;
+  // Output:
+  //
+  // Catched exception Segv
+  //
+#endif
 
   // --------------
+  // Example of exception raised in called function and catched in calling
+  // function.
 
-  PBErrTry:
+  Try {
+
     fun();
 
-  PBErrCatchExc PBErr_Exception_NaN:
-    printf("Catched exception NaN in called function\n");
+  } Catch (TryCatchException_NaN) {
 
-  PBErrEndTry;
+    printf("Catched exception NaN raised in called function\n");
+
+  } EndTry;
+
+  // Output:
+  //
+  // Catched exception NaN raised in called function
+  //
+
+  // --------------
+  // Example of exception raised in called function and uncatched in calling
+  // function.
+
+  Try {
+
+    fun();
+
+  } EndTry;
+
+  // Output:
+  //
+  // Unhandled exception (2).
+  //
+
+  // --------------
+  // Example of exception raised outside a TryCatch block.
+
+  Raise(TryCatchException_NaN);
+
+  // Output:
+  //
+  // Unhandled exception (2).
+  //
+
+  // --------------
+  // Example of overflow of recursive inclusion of TryCatch blocks.
+
+  Try {
+
+    Try {
+
+      Try {
+
+        Try {
+
+          fun();
+
+        } EndTry;
+
+      } EndTry;
+
+    } EndTry;
+
+  } EndTry;
+
+  // Output:
+  //
+  // TryCatch blocks recursive incursion overflow, exiting. (You can try
+  // to raise the value of TryCatchMaxExcLvl in trycatch.c, it was: 3)
+  //
 
   printf("UnitTestTryCatch OK\n");
 }
