@@ -148,8 +148,8 @@ void PBErrInvalidPolymorphism(void*t, ...);
 
 // List of exceptions ID, must starts at 1 (0 is reserved for the setjmp at
 // the beginning of the TryCatch blocks). One can extend the list at will
-// here, or user defined exceptions can be added directly in the user code
-// as follow:
+// here, or user-defined exceptions can be added directly in the user code
+// as follows:
 // enum UserDefinedExceptions {
 //
 //   myUserExceptionA = TryCatchException_LastID,
@@ -164,7 +164,7 @@ void PBErrInvalidPolymorphism(void*t, ...);
 // default exceptions according to the planned use of this trycatch module.
 enum TryCatchException {
 
-  TryCatchException_IOError = 1,
+  TryCatchException_test = 1,
   TryCatchException_NaN,
   TryCatchException_Segv,
   TryCatchException_LastID
@@ -174,24 +174,26 @@ enum TryCatchException {
 // Function called at the beginning of a TryCatch block to guard against
 // overflow of the stack of jump_buf
 void TryCatchGuardOverflow(
-  // No arguments
+  // No parameters
   void);
 
 // Function called to get the jmp_buf on the top of the stack when
 // starting a new TryCatch block
 jmp_buf* TryCatchGetJmpBufOnStackTop(
-  // No arguments
+  // No parameters
   void);
 
-// Function called when a raised TryCatchException has not been catched
+// Function called when a raised TryCatchException has not been caught
 // by a Catch segment
 void TryCatchDefault(
-  // No arguments
-  void);
+  // File where the exception occured
+  char const* const filename,
+  // Line where the exception occured
+          int const line);
 
 // Function called at the end of a TryCatch block
 void TryCatchEnd(
-  // No arguments
+  // No parameters
   void);
 
 // Head of the TryCatch block, to be used as
@@ -213,7 +215,7 @@ void TryCatchEnd(
 
 // Catch segment in the TryCatch block, to be used as
 //
-// Catch (/*... one of TryCatchException or user defined exception ...*/) {
+// Catch (/*... one of TryCatchException or user-defined exception ...*/) {
 //   /*... code executed if the exception has been raised in the
 //     TryCatch block ...*/
 //
@@ -226,17 +228,52 @@ void TryCatchEnd(
       break;\
     case e:
 
-// Tail of the TryCatch block, to be used as
+// Macro to assign several exceptions to one Catch segment in the TryCatch
+// block, to be used as
+//
+// Catch (/*... one of TryCatchException or user-defined exception ...*/)
+// CatchAlso (/*... another one ...*/) {
+// /*... as many CatchAlso statement as your need ...*/
+//   /*... code executed if one of the exception has been raised in the
+//     TryCatch block ...
+//     (Use TryCatchGetLastExc() if you need to know which exception as
+//     been raised) */
+//
+// Comments on the macro:
+//    // case of the raised exception
+//    case e:
+#define CatchAlso(e) \
+    case e:
+
+// Macro to declare the default Catch segment in the TryCatch
+// block, must be the last Catch segment in the TryCatch block, 
+// to be used as
+//
+// CatchDefault {
+//   /*... code executed if an exception has been raised in the
+//     TryCatch block and hasn't been catched by a previous Catch segment...
+//     (Use TryCatchGetLastExc() if you need to know which exception as
+//     been raised) */
+//
+// Comments on the macro:
+//    // default case
+//    default:
+#define CatchDefault \
+      break;\
+    default:
+
+// Tail of the TryCatch block if it doesn't contain CatchDefault, 
+// to be used as
 //
 // } EndTry;
 //
 // Comments on the macro:
 //      // End of the previous case
 //      break;
-//    // default case, i.e. any raised exception which hasn't been catched
-//    // by a previous Catch is catched here
+//    // default case, i.e. any raised exception which hasn't been caught
+//    // by a previous Catch is caught here
 //    default:
-//      // Processing of uncatched exception
+//      // Processing of uncaught exception
 //      TryCatchDefault();
 //  // End of the switch statement at the head of the TryCatch block
 //  }
@@ -245,7 +282,21 @@ void TryCatchEnd(
 #define EndTry \
       break; \
     default: \
-      TryCatchDefault(); \
+      TryCatchDefault(__FILE__, __LINE__); \
+  } \
+  TryCatchEnd()
+
+// Tail of the TryCatch block if it contains CatchDefault, 
+// to be used as
+//
+// } EndTryWithDefault;
+//
+// Comments on the macro:
+//  // End of the switch statement at the head of the TryCatch block
+//  }
+//  // Post processing of the TryCatchBlock
+//  TryCatchEnd()
+#define EndTryWithDefault \
   } \
   TryCatchEnd()
 
@@ -253,7 +304,7 @@ void TryCatchEnd(
 void Raise(
   // The TryCatchException to raise. Do not use the type enum
   // TryCatchException to allow the user to extend the list of exceptions
-  // with user defined exception outside of enum TryCatchException.
+  // with user-defined exception outside of enum TryCatchException.
   int exc);
 
 // The struct siginfo_t used to handle the SIGSEV is not defined in
@@ -264,10 +315,20 @@ void Raise(
 // TryCatchException_Segv upon reception of this signal. Must have been
 // called before using Catch(TryCatchException_Segv)
 void TryCatchInitHandlerSigSegv(
-  // No arguments
+  // No parameters
   void);
 
 #endif
+
+// Function to get the ID of the last raised exception
+int TryCatchGetLastExc(
+  // No parameters
+  void);
+
+// Function to convert from enum TryCatchException to char*
+char const* TryCatchExceptionToStr(
+  // The exception ID
+  enum TryCatchException exc);
 
 // ================= Polymorphism ==================
 

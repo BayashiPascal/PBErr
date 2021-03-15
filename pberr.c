@@ -550,14 +550,23 @@ int tryCatchExcLvl = 0;
 // To avoid exposing this variable to the user, implement any code using
 // it as functions here instead of in the #define-s of trycatch.h
 // Do not use the type enum TryCatchException to allow the user to extend
-// the list of exceptions with user defined exceptions outside of enum
+// the list of exceptions with user-defined exceptions outside of enum
 // TryCatchException.
 int tryCatchExc = 0;
+
+// Label of exceptions, must match the declaration of enum TryCatchException
+// Take care of index 0 which is unused in the enum
+char* TryCatchExceptionStr[TryCatchException_LastID] = {
+  "",
+  "TryCatchException_test",
+  "TryCatchException_NaN",
+  "TryCatchException_Segv",
+};
 
 // Function called at the beginning of a TryCatch block to guard against
 // overflow of the stack of jump_buf
 void TryCatchGuardOverflow(
-  // No arguments
+  // No parameters
   void) {
 
   // If the max level of incursion is reached
@@ -579,7 +588,7 @@ void TryCatchGuardOverflow(
 // Function called to get the jmp_buf on the top of the stack when
 // starting a new TryCatch block
 jmp_buf* TryCatchGetJmpBufOnStackTop(
-  // No arguments
+  // No parameters
   void) {
 
   // Reset the last raised exception
@@ -600,7 +609,7 @@ jmp_buf* TryCatchGetJmpBufOnStackTop(
 void Raise(
   // The TryCatchException to raise. Do not use the type enum
   // TryCatchException to allow the user to extend the list of exceptions
-  // with user defined exception outside of enum TryCatchException.
+  // with user-defined exception outside of enum TryCatchException.
   int exc) {
 
   // If we are in a TryCatch block
@@ -627,30 +636,34 @@ void Raise(
     // exception
     fprintf(
       stderr,
-      "Unhandled exception (%d).\n",
-      exc);
+      "Unhandled exception (%s).\n",
+      TryCatchExceptionToStr(exc));
 
   }
 
 }
 
-// Function called when a raised TryCatchException has not been catched
+// Function called when a raised TryCatchException has not been caught
 // by a Catch segment
 void TryCatchDefault(
-  // No arguments
-  void) {
+  // File where the exception occured
+  char const* const filename,
+  // Line where the exception occured
+          int const line) {
 
   // If we are outside of a TryCatch block
   if (tryCatchExcLvl == 0) {
 
-    // The exception has not been catched by a Catch segment,
+    // The exception has not been caught by a Catch segment,
     // print a message on the standard error stream and ignore it
     fprintf(
       stderr,
-      "Unhandled exception (%d).\n",
-      tryCatchExc);
+      "Unhandled exception (%s) in %s, line %d.\n",
+      TryCatchExceptionToStr(tryCatchExc),
+      filename,
+      line);
 
-  // Else, the exception has not been catched in the current
+  // Else, the exception has not been caught in the current
   // TryCatch block but may be catchable at lower level
   } else {
 
@@ -664,7 +677,7 @@ void TryCatchDefault(
 
 // Function called at the end of a TryCatch block
 void TryCatchEnd(
-  // No arguments
+  // No parameters
   void) {
 
   // The execution has reached the end of the current TryCatch block,
@@ -687,6 +700,7 @@ void TryCatchSigSegvHandler(
   // Optional arguments, unused
   void *arg) {
 
+  // Unused parameters
   (void)signal; (void)si; (void)arg;
 
   // Raise the exception
@@ -698,7 +712,7 @@ void TryCatchSigSegvHandler(
 // TryCatchException_Segv upon reception of this signal. Must have been
 // called before using Catch(TryCatchException_Segv)
 void TryCatchInitHandlerSigSegv(
-  // No arugments
+  // No parameters
   void) {
 
   // Create a struct sigaction to set the handler
@@ -716,6 +730,25 @@ void TryCatchInitHandlerSigSegv(
     SIGSEGV,
     &sigActionSegv,
     NULL);
+
+}
+
+// Function to get the ID of the last raised exception
+int TryCatchGetLastExc(
+  // No parameters
+  void) {
+
+  // Return the ID
+  return tryCatchExc;
+
+}
+
+// Function to convert from enum TryCatchException to char*
+char const* TryCatchExceptionToStr(
+  // The exception ID
+  enum TryCatchException exc) {
+
+  return TryCatchExceptionStr[exc];
 
 }
 
